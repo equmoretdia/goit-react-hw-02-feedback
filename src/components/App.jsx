@@ -13,8 +13,16 @@ class App extends React.Component {
     this.setState(prevState => ({ [name]: prevState[name] + 1 }));
   };
 
+  countTotalFeedback = ({ good, neutral, bad } = this.state) =>
+    good + neutral + bad;
+
+  countPositiveFeedbackPercentage = ({ good, neutral, bad } = this.state) =>
+    (good / (good + neutral + bad)) * 100;
+
   render() {
     const { good, neutral, bad } = this.state;
+    const total = this.countTotalFeedback();
+    const positive = this.countPositiveFeedbackPercentage();
     return (
       <section className="section">
         <h2>Please leave your feedback</h2>
@@ -35,6 +43,8 @@ class App extends React.Component {
             <li>Good: {good}</li>
             <li>Neutral: {neutral}</li>
             <li>Bad: {bad}</li>
+            <li>Total: {total}</li>
+            <li>Positive feedback: {positive}%</li>
           </ul>
         </div>
       </section>
