@@ -1,5 +1,9 @@
 import React from 'react';
 
+import Section from './Section';
+import Statistics from './Statistics';
+import FeedbackOptions from './FeedbackOptions';
+
 class App extends React.Component {
   state = {
     good: 0,
@@ -8,7 +12,7 @@ class App extends React.Component {
   };
 
   addFeadback = e => {
-    console.log(e.target);
+    // console.log(e.target);
     const { name } = e.target;
     this.setState(prevState => ({ [name]: prevState[name] + 1 }));
   };
@@ -16,38 +20,28 @@ class App extends React.Component {
   countTotalFeedback = ({ good, neutral, bad } = this.state) =>
     good + neutral + bad;
 
-  countPositiveFeedbackPercentage = ({ good, neutral, bad } = this.state) =>
-    (good / (good + neutral + bad)) * 100;
+  countPositiveFeedbackPercentage = ({ good, neutral, bad } = this.state) => {
+    const total = good + neutral + bad;
+    const percentage = total > 0 ? (good / total) * 100 : 0;
+    return percentage.toFixed(2) + '%';
+  };
 
   render() {
     const { good, neutral, bad } = this.state;
+    const options = ['good', 'neutral', 'bad'];
     const total = this.countTotalFeedback();
     const positive = this.countPositiveFeedbackPercentage();
     return (
-      <section className="section">
-        <h2>Please leave your feedback</h2>
-        <div>
-          <button type="button" name="good" onClick={this.addFeadback}>
-            Good
-          </button>
-          <button type="button" name="neutral" onClick={this.addFeadback}>
-            Neutral
-          </button>
-          <button type="button" name="bad" onClick={this.addFeadback}>
-            Bad
-          </button>
-        </div>
-        <div>
-          <h2>Statistics</h2>
-          <ul>
-            <li>Good: {good}</li>
-            <li>Neutral: {neutral}</li>
-            <li>Bad: {bad}</li>
-            <li>Total: {total}</li>
-            <li>Positive feedback: {positive}%</li>
-          </ul>
-        </div>
-      </section>
+      <Section title="Please leave your feedback">
+        <FeedbackOptions options={options} onLeaveFeedback={this.addFeadback} />
+        <Statistics
+          good={good}
+          neutral={neutral}
+          bad={bad}
+          total={total}
+          positivePercentage={positive}
+        />
+      </Section>
     );
   }
 }
