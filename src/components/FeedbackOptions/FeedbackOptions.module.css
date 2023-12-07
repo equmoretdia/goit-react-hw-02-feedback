@@ -23,8 +23,7 @@
   border: none;
 }
 
-.button:hover,
-.button:focus {
+.button:hover {
   color: #212020;
   background-color: #e1e4bf;
   outline-color: #212020;

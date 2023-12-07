@@ -8,8 +8,8 @@ import Notification from './Notification';
 class App extends React.Component {
   state = {
     good: 0,
-    neutral: 0,
     bad: 0,
+    ugly: 0,
   };
 
   addFeadback = e => {
@@ -18,17 +18,16 @@ class App extends React.Component {
     this.setState(prevState => ({ [name]: prevState[name] + 1 }));
   };
 
-  countTotalFeedback = ({ good, neutral, bad } = this.state) =>
-    good + neutral + bad;
+  countTotalFeedback = ({ good, bad, ugly } = this.state) => good + bad + ugly;
 
-  countPositiveFeedbackPercentage = ({ good, neutral, bad } = this.state) => {
-    const total = good + neutral + bad;
+  countPositiveFeedbackPercentage = ({ good, bad, ugly } = this.state) => {
+    const total = good + bad + ugly;
     const percentage = total > 0 ? (good / total) * 100 : 0;
     return percentage.toFixed(2) + '%';
   };
 
   render() {
-    const { good, neutral, bad } = this.state;
+    const { good, bad, ugly } = this.state;
     const options = Object.keys(this.state);
     const total = this.countTotalFeedback();
     const positive = this.countPositiveFeedbackPercentage();
@@ -45,8 +44,8 @@ class App extends React.Component {
           {total > 0 ? (
             <Statistics
               good={good}
-              neutral={neutral}
               bad={bad}
+              ugly={ugly}
               total={total}
               positivePercentage={positive}
             />
